@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+<div id="app">
+    {{message}}
+</div>
+
+<div id="app2">
+
+    <!--
+
+    v-bind:title="message"会将我们定义的app2里面的message绑定在 span的title标签上面 当我们进行改变的时候  就是  app2.message = 'new message'那么我们对应看到的span 标签上面的title属性变成 title = "new message"
+    -->
+    <span v-bind:title="message">
+        Hover your mouse over me for a few seconds to see my dynamically bound title!
+  </span>
+</div>
+
+
+<div id="app3">
+
+    <span v-if="seen">
+        hello  i am true
+    </span>
+    <span v-if="noseen">
+        hello  你是看不见我的
+    </span>
+
+</div>
+
+
+<ul id="app4" v-bind:title="todos">
+    <li v-for="todo in todos">
+        {{todo.name}}
+
+    </li>
+
+</ul>
+
+
+<div id="app5">
+    <p>
+        {{message}}
+    </p>
+    <button v-on:click="reverseMessage">
+        Reverse Message
+    </button>
+
+</div>
+
+
+<div id="app6">
+    <p>
+  {{message}}
+    </p>
+    <input type="text" v-model="message"/>
+
+
+</div>
+
+<!--
+todo-item是我们自定义的组件  并且组件有一个属性props:title 和模板
+template  并且模板中绑定的值就是我们属性的值对应的属性值 title.text
+下面我们使用循环将 J具体的某一项的值绑定在 组件的 title的属性上  然后在组件内部可以获取到属性值的属性  也就是 title.item.text
+-->
+<div id="app7">
+    <todo-item v-for="item in groceryList" v-bind:title="item"></todo-item>
+</div>
+
+<!--
+v-bind:href
+v-on:click
+-->
+<div id="app8">
+    <a href="" v-bind:href="url"></a>
+    <button v-on:click="clickFn"></button>
+    <!--
+    简写是  @click
+    -->
+    <button @click="clickFn"></button>
+
+</div>
+
+
+
+</body>
+</html>
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<script src="index.js"></script>
