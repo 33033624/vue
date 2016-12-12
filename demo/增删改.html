@@ -56,30 +56,35 @@
         xhr.open(method,url,true);
         xhr.onreadystatechange=function(data){
             if(xhr.readyState == 4 && /^2\d{2}$/.test(xhr.status) ){
-                callback(data);
+                callback(xhr.responseText);
             }
         }
         xhr.send(data);
 
-        }
+        };
+
+    var data='';
+
+
+    console.log(data);
 
 
     var vue = new Vue({
         el:"#app",
         data:{
-          students:[
-              {name:"join",score:80,parents:'zhang'},
-              {name:"aa",score:82,parents:'aa'},
-              {name:"ff",score:78,parents:'zhahhng'},
-              {name:"joivn",score:90,parents:'tg'},
-              {name:"df",score:29,parents:'sud'},
-              {name:"hsi",score:80,parents:'cc'}
-          ],
+          students:data,
             newPerson:{
                 name:'',
                 score:'',
                 parents:''
             }
+        },
+        created:function(){
+            var s = this;
+            ajax('get','http://localhost:9000/getStudent','',true,function(data){
+                console.log(data);
+                s.students = JSON.parse(data);
+            })
         },
         methods:{
             remove:function(stu){
@@ -87,6 +92,7 @@
                 this.students.forEach(function(item,index){
                     if(stu == item){
                         s.students.splice(index,1);
+                        ajax('post','http://localhost:9000/deleteStudent',JSON.stringify(item),true);
                     }
 
                 })
@@ -95,11 +101,15 @@
             add:function(){
                 if(this.newPerson.name && this.newPerson.score && this.newPerson.parents){
                     this.students.push(this.newPerson);
+
+                    ajax('post','http://localhost:9000/putStudent',JSON.stringify(this.newPerson),true);
+
                 this.newPerson = {
                     name:'',
                     score:'',
                     parents:''
                 }
+
                 }
 
 
