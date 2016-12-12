@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        .textA{
+            text-align: center;
+        }
+
+    </style>
+    <!-- 新 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
+</head>
+<body>
+<div id="app">
+    <form action="">
+        <label for="name">姓名</label>
+        <input type="text" id="name" v-model="newPerson.name"/>
+        <label for="score">分数</label>
+        <input type="text" id="score" v-model="newPerson.score"/>
+        <label for="parents">父母</label>
+        <input type="text" id="parents" v-model="newPerson.parents"/>
+        <input type="button" v-on:click="add" value="添加"/>
+
+    </form>
+
+<table  class="table textA">
+    <thead class="bg-primary">
+    <th class="col-xs-3 textA">姓名</th>
+    <th class="col-xs-3 textA">分数</th>
+    <th class="col-xs-3 textA">父母</th>
+    <th class="textA">操作
+    </th>
+    </thead>
+    <tr v-for="stu in students">
+        <td>{{stu.name}}</td>
+        <td>{{stu.score}}</td>
+        <td>{{stu.parents}}</td>
+        <td><button  type="button" class="btn btn-danger" @click="remove(stu)">移除</button></td>
+
+
+    </tr>
+
+</table>
+</div>
+
+</body>
+</html>
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+
+<script>
+
+    var ajax = function(method,url,data,async,callback){
+        var xhr = new XMLHttpRequest();
+        xhr.open(method,url,true);
+        xhr.onreadystatechange=function(data){
+            if(xhr.readyState == 4 && /^2\d{2}$/.test(xhr.status) ){
+                callback(data);
+            }
+        }
+        xhr.send(data);
+
+        }
+
+
+    var vue = new Vue({
+        el:"#app",
+        data:{
+          students:[
+              {name:"join",score:80,parents:'zhang'},
+              {name:"aa",score:82,parents:'aa'},
+              {name:"ff",score:78,parents:'zhahhng'},
+              {name:"joivn",score:90,parents:'tg'},
+              {name:"df",score:29,parents:'sud'},
+              {name:"hsi",score:80,parents:'cc'}
+          ],
+            newPerson:{
+                name:'',
+                score:'',
+                parents:''
+            }
+        },
+        methods:{
+            remove:function(stu){
+                const s = this;
+                this.students.forEach(function(item,index){
+                    if(stu == item){
+                        s.students.splice(index,1);
+                    }
+
+                })
+
+            },
+            add:function(){
+                if(this.newPerson.name && this.newPerson.score && this.newPerson.parents){
+                    this.students.push(this.newPerson);
+                this.newPerson = {
+                    name:'',
+                    score:'',
+                    parents:''
+                }
+                }
+
+
+            }
+        }
+
+    })
+
+
+
+</script>
