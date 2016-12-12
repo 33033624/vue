@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+  <div id="example">
+     <my-component></my-component>
+
+
+
+  </div>
+
+</body>
+</html>
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<script>
+
+  /*  Vue.component('my-component',{
+        template:'<div>a custom component</div>'
+
+    })
+    new Vue({
+        el:'#example'
+    })*/
+
+
+    var Child = {
+        template:'<div> a custom component</div>'
+    }
+    new Vue({
+        el:'#example',
+        components:{
+            "my-component":Child
+        }
+    })
+
+
+
+
+
+</script>

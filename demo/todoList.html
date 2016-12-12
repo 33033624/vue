@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<div id="app">
+
+    <input type="text" v-model="newTodoText" placeholder="add this text"/>
+     <button v-on:click="addNewTodo">
+
+     </button>
+    <ul>
+
+        <li v-for="todo in todos">
+            {{todo}}
+        </li>
+
+
+
+
+    </ul>
+    <div>
+        <button v-on:click="addOne">加1</button>
+
+        <div>{{num}}</div>
+
+
+    </div>
+
+
+</div>
+</body>
+</html>
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<script>
+    var vue = new Vue({
+        el:'#app',
+        data:{
+            newTodoText:'',
+            todos:[
+                    'do the dishes',
+                    'take out the trash',
+                    'mow the lawn'
+            ],
+            num:1
+        },
+        methods:{
+            addNewTodo:function(){
+                this.todos.push(this.newTodoText);
+                this.newTodoText=''
+            }
+            ,
+            addOne:function(){
+                this.num = this.num+1
+
+            }
+        }
+    })
+
+
+
+
+
+</script>

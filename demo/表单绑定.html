@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<div id="app">
+    <!--
+     v-model实现数据双向绑定
+    -->
+    <input type="text" v-model="message"/>
+    <p>{{message}}</p>
+
+    <p>textarea {{message}}</p>
+    <textarea name="" id="" cols="30" rows="10" v-model="message" placeholder="change textarea"></textarea>
+
+    <input type="checkbox" id="jack" value="jack" v-model="checkedNames"/>
+    <label for="jack">jack</label>
+    <input type="checkbox" id="john" value="john" v-model="checkedNames"/>
+    <label for="john">
+        john
+    </label>
+    <input type="checkbox" id="mike" value="mike" v-model="checkedNames"/>
+    <label for="mike">
+        mike
+    </label>
+    <p>
+        {{checkedNames}}
+    </p>
+
+
+    <select v-model="selected">
+        <option>A</option>
+        <option>B</option>
+        <option>C</option>
+    </select>
+    <span>Selected: {{ selected }}</span>
+
+
+
+</div>
+
+</body>
+</html>
+
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<script>
+
+  var vue = new Vue({
+      el:"#app",
+      data:{
+          message:'',
+          checkedNames:[],
+          selected:'A'
+      }
+
+
+
+  })
+
+
+
+</script>

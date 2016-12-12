@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<div id="app">
+    <p>{{total}}</p>
+    <button-counter v-on:increment="incrementTotal"></button-counter>
+
+</div>
+</body>
+</html>
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<script>
+
+    Vue.component('button-counter',{
+        template:'<button v-on:click="increment">{{counter}}</button>'
+        ,
+        data:function(){
+            return {
+                counter:1
+            }
+        },
+        methods:{
+            increment:function(){
+                this.counter+=1;
+                this.$emit('increment')/*这个才是v-on:increment:"incrementTotal"传递进来的监听函数的触发  不执行那么我们从父级传递进来的函数就不会执行*/
+            }
+        }
+    })
+
+    var vue =new Vue({
+        el:'#app',
+        data:{
+            total:0
+
+        },
+        methods:{
+            incrementTotal:function(){
+                this.total+=1;
+            }
+        }
+    });
+
+
+
+</script>

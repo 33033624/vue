@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        .bounce-enter-active {
+            animation: bounce-in .5s;
+        }
+        .bounce-leave-active {
+            animation: bounce-out .5s;
+        }
+        @keyframes bounce-in {
+            0% {
+                transform: scale(0);
+            }
+            50% {
+                transform: scale(1.5);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+        @keyframes bounce-out {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.5);
+            }
+            100% {
+                transform: scale(0);
+            }
+        }
+
+
+    </style>
+</head>
+<body>
+<div id="example-2">
+    <button @click="show = !show">Toggle {{show == true?'show':'hide'}} </button>
+    <!--
+    transition是自己内置的
+    -->
+    <transition name="bounce">
+        <p v-if="show">Look at me!</p>
+    </transition>
+
+
+
+</div>
+</body>
+</html>
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<script>
+    new Vue({
+        el: '#example-2',
+        data: {
+            show: true
+        }
+    })
+
+
+
+</script>
