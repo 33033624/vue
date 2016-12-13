@@ -32,26 +32,71 @@
     <th class="col-xs-3 textA">父母</th>
     <th class="textA">操作
     </th>
+    <th class="textA">修改</th>
     </thead>
     <tr v-for="stu in students">
         <td>{{stu.name}}</td>
         <td>{{stu.score}}</td>
         <td>{{stu.parents}}</td>
         <td><button  type="button" class="btn btn-danger" @click="remove(stu)">移除</button></td>
+        <td><button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal" v-on:click="change(stu)">
+            修改
+        </button>
+        </td>
+
+
 
 
     </tr>
 
 </table>
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">关闭</span></button>
+                    <h4 class="modal-title" id="myModalLabel">修改</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" role="form">
+                        <div class="form-group form-group-sm">
+                            <label class="col-sm-2 control-label" for="formGroupInputSmallName">姓名</label>
+                            <div class="col-sm-10">
+                                <input class="form-control" type="text" id="formGroupInputSmallName" v-model="changeStu.name" disabled="true">
+                            </div>
+                            <label class="col-sm-2 control-label" for="formGroupInputSmallScore">分数</label>
+                            <div class="col-sm-10">
+                                <input class="form-control" type="text" id="formGroupInputSmallScore" v-model="changeStu.score">
+                            </div>
+                            <label class="col-sm-2 control-label" for="formGroupInputSmallParent">家长</label>
+                            <div class="col-sm-10">
+                                <input class="form-control" type="text" id="formGroupInputSmallParent" v-model="changeStu.parents">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" v-on:click="close(changeStu)">关闭</button>
+                    <button type="button" class="btn btn-primary " v-on:click="save(changeStu)">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 </div>
 
 </body>
 </html>
+<script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+<script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 <script src="https://unpkg.com/vue/dist/vue.js"></script>
 
 <script>
 
     var ajax = function(method,url,data,async,callback){
+        callback = callback?callback:function(){};
         var xhr = new XMLHttpRequest();
         xhr.open(method,url,true);
         xhr.onreadystatechange=function(data){
@@ -77,6 +122,16 @@
                 name:'',
                 score:'',
                 parents:''
+            },
+            changeStu:{
+                name:'',
+                score:'',
+                parents:''
+            },
+            tempStu:{
+                name:'',
+                score:'',
+                parents:''
             }
         },
         created:function(){
@@ -99,19 +154,63 @@
 
             },
             add:function(){
+                const s=this;
                 if(this.newPerson.name && this.newPerson.score && this.newPerson.parents){
-                    this.students.push(this.newPerson);
+                    var sameName;
+                    this.students.forEach(function(item,index){
+                        if(item.name == s.newPerson.name){
+                           sameName = true;
+                        }
+                    })
+                    if(!sameName){
+                        this.students.push(this.newPerson);
+                        ajax('post','http://localhost:9000/putStudent',JSON.stringify(this.newPerson),true);
+                    }else{
+                        alert('对不起您的名字重复')
+                    }
 
-                    ajax('post','http://localhost:9000/putStudent',JSON.stringify(this.newPerson),true);
+                    this.newPerson = {
+                        name:'',
+                        score:'',
+                        parents:''
+                    }
 
-                this.newPerson = {
-                    name:'',
-                    score:'',
-                    parents:''
                 }
 
+
+            },
+            change:function(stu){
+                console.log(stu)
+                this.changeStu = stu;
+                    console.log(stu);
+
+                for(var key in stu){
+                    this.tempStu[key] = stu[key];
                 }
 
+            },
+            save:function(stu){
+                    const s = this;
+                 this.students.forEach((function(item,index){
+                    if(item.name == stu.changeStu){
+                        s.data[index] = this.changeStu;
+                    }
+                }));
+                ajax('post','http://localhost:9000/changeStudent',JSON.stringify(this.changeStu))
+
+                $('#myModal').modal('toggle')
+            },
+            close:function(){
+               var s =this;
+                s.changeStu = s.tempStu;
+               for(var i=0;i<this.students.length;i++){
+                   if(this.students[i].name == this.changeStu.name){
+                       for(var key in this.students[i] ){
+                           this.students[i][key] = s.tempStu[key];
+
+                       }
+                   }
+               }
 
             }
         }
